@@ -1161,6 +1161,19 @@ body.light .tutorial-skip {
     z-index: 1001;
     box-shadow: 0 0 0 4px var(--accent);
     border-radius: inherit;
+    animation: highlightPulse 2s infinite;
+}
+
+@keyframes highlightPulse {
+    0% {
+        box-shadow: 0 0 0 4px var(--accent);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(0, 255, 213, 0.3);
+    }
+    100% {
+        box-shadow: 0 0 0 4px var(--accent);
+    }
 }
 
 /* Close Modal Button */
@@ -1196,4 +1209,242 @@ body.light .close-modal {
 body.light .close-modal:hover {
     background: rgba(0, 0, 0, 0.2);
 }
-  
+
+/* Consent Popup Styles */
+.consent-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, var(--card-bg-dark) 0%, rgba(20, 20, 36, 0.98) 100%);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    max-width: 90%;
+    width: 500px;
+    border: 1px solid var(--accent);
+}
+
+body.light .consent-popup {
+    background: linear-gradient(135deg, var(--card-bg-light) 0%, rgba(240, 240, 240, 0.98) 100%);
+}
+
+.consent-content {
+    max-height: 60vh;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+    padding-right: 1rem;
+}
+
+.consent-content h2 {
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.consent-content p {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.consent-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.consent-btn {
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.consent-accept {
+    background: var(--accent);
+    color: #000;
+}
+
+.consent-decline {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-dark);
+}
+
+body.light .consent-decline {
+    background: rgba(0, 0, 0, 0.1);
+    color: var(--text-light);
+}
+
+.consent-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Info Button in Milestone Modal */
+.milestone-info-btn {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--text-dark);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+    z-index: 10;
+}
+
+body.light .milestone-info-btn {
+    color: var(--text-light);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.milestone-info-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+/* Info Popup in Milestone Modal */
+.milestone-info-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, var(--card-bg-dark) 0%, rgba(20, 20, 36, 0.98) 100%);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    max-width: 90%;
+    width: 400px;
+    border: 1px solid var(--accent);
+    animation: popIn 0.3s ease-out;
+}
+
+body.light .milestone-info-popup {
+    background: linear-gradient(135deg, var(--card-bg-light) 0%, rgba(240, 240, 240, 0.98) 100%);
+}
+
+.milestone-info-popup h3 {
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.milestone-info-popup p {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.milestone-info-popup .close-popup {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--text-dark);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+body.light .milestone-info-popup .close-popup {
+    color: var(--text-light);
+}
+
+.milestone-info-popup .close-popup:hover {
+    transform: rotate(90deg);
+}
+
+/* Remove unnecessary styles */
+.milestone-list,
+.milestone-item,
+.milestone-icon,
+.milestone-details,
+.milestone-title,
+.milestone-description {
+    display: none;
+}
+
+/* Update milestone modal styles */
+.milestone-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: linear-gradient(135deg, rgba(30, 30, 46, 0.98) 0%, rgba(20, 20, 36, 0.98) 100%);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    border: 1px solid var(--accent);
+}
+
+body.light .milestone-modal {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 240, 0.95) 100%);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.milestone-modal h2 {
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+body.light .milestone-modal h2 {
+    color: var(--text-light);
+}
+.celebration-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 240, 0.95) 100%);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    max-width: 90%;
+}
+.celebration-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+.celebration-content {
+    text-align: center;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    font-size: 1.2rem;
+}
+.celebration-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none; 
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.celebration-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
