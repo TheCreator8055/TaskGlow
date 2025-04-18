@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#111" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Poppins:wght@400;600&family=Space+Grotesk:wght@500&display=swap" rel="stylesheet">
+  <title>Task Glow</title>
+</head>
+<body>
+  <!-- Loading Overlay -->
+  <div class="loading-overlay">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <!-- Tutorial Overlay -->
+  <div class="tutorial-overlay">
+    <div class="tutorial-step" id="tutorial-1">
+      <h3>Welcome to Task Glow! 👋</h3>
+      <p>Let's get you started with organizing your day effectively. This quick tutorial will show you the main features.</p>
+      <div class="tutorial-buttons">
+        <button class="tutorial-btn tutorial-skip">Skip Tutorial</button>
+        <button class="tutorial-btn tutorial-next">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="topbar">
+    <div class="title-section">
+      <h1>Task Glow</h1>
+      <button class="milestone-info" title="Learn about streaks and achievements">🎯</button>
+    </div>
+    <button id="installBtn" hidden>Install App</button>
+    <div class="controls">
+      <div class="toggle-switch">
+        <label class="switch-label">
+          <input type="checkbox" class="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>  
+    </div>
+  </div>
+  <div id="streak" class="streak">
+    🔥 Streak: <span id="streakCount">0</span> days
+    <button id="resetStreakBtn">Reset Streak</button>
+  </div>
+  <div id="planner" class="planner"></div>
+  <script src="ai-manager.js"></script>
+  <script src="app.js"></script>
+  <script src="test.js"></script>
+</body>
+</html>
