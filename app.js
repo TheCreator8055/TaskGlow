@@ -78,42 +78,9 @@ const tutorialSteps = [
 
 let currentTutorialStep = 0;
 
-// Add loading quotes array
-const loadingQuotes = [
-    "Preparing your productivity boost...",
-    "Setting up your success path...",
-    "Loading your motivation...",
-    "Getting your tasks in order...",
-    "Charging up your productivity...",
-    "Almost there, stay focused...",
-    "Your success journey begins...",
-    "Loading your achievement path...",
-    "Preparing your milestone tracker...",
-    "Setting up your streak counter..."
-];
-
-// Add achievement quotes array
-const achievementQuotes = [
-    "Every great journey begins with a single step!",
-    "First streak achieved! The beginning of something great!",
-    "You've taken the first step towards consistency!",
-    "First streak unlocked! Your productivity journey begins!",
-    "Congratulations on starting your streak! Keep going!",
-    "First streak achieved! The first of many victories!",
-    "You've started your success story! Keep writing it!",
-    "First streak unlocked! Your potential is limitless!",
-    "Congratulations! You've taken the first step to greatness!",
-    "First streak achieved! The beginning of your success!"
-];
-
 // Loading state management
-function showLoading(quote = null) {
+function showLoading() {
     loadingOverlay.style.display = 'flex';
-    const spinner = loadingOverlay.querySelector('.loading-spinner');
-    const quoteElement = document.createElement('div');
-    quoteElement.className = 'loading-quote';
-    quoteElement.textContent = quote || loadingQuotes[Math.floor(Math.random() * loadingQuotes.length)];
-    loadingOverlay.appendChild(quoteElement);
 }
 
 function hideLoading() {
@@ -121,12 +88,10 @@ function hideLoading() {
     setTimeout(() => {
         loadingOverlay.style.display = 'none';
         loadingOverlay.style.opacity = '1';
+        
+        // Show tutorial for first-time users
         if (!localStorage.getItem('tutorialComplete')) {
             showTutorial();
-        }    
-        const quoteElement = loadingOverlay.querySelector('.loading-quote');
-        if (quoteElement) {
-            quoteElement.remove();
         }
     }, 300);
 }
@@ -250,18 +215,16 @@ initializeApp();
 const themeCheckbox = document.querySelector('.checkbox');
 
 function applyTheme(theme) {
-    showLoading("Applying theme...");
-    if (theme === 'light') {
-        root.classList.add('light');
-        root.classList.remove('dark');
-        themeCheckbox.checked = true;
-    } else {
-        root.classList.add('dark');
-        root.classList.remove('light');
-        themeCheckbox.checked = false;
-    }
-    localStorage.setItem('theme', theme);
-    setTimeout(hideLoading, 500);
+  if (theme === 'light') {
+    root.classList.add('light');
+    root.classList.remove('dark');
+    themeCheckbox.checked = true;
+  } else {
+    root.classList.add('dark');
+    root.classList.remove('light');
+    themeCheckbox.checked = false;
+  }
+  localStorage.setItem('theme', theme);
 }
 
 function initializeTheme() {
@@ -352,8 +315,8 @@ function generateMilestoneProgress(streak) {
     }
 
     const timelineHTML = `
-        <div class="milestone-point start ${streak >= startDays ? 'achieved' : ''}">
-            <div class="milestone-icon">${startDays === 0 ? '🎯' : previousMilestone.icon}</div>
+        <div class="milestone-point start">
+            <div class="milestone-icon ${streak >= startDays ? 'achieved' : ''}">${startDays === 0 ? '🎯' : previousMilestone.icon}</div>
             <div class="milestone-title">${startDays === 0 ? 'Start' : previousMilestone.title}</div>
             <div class="milestone-days">${startDays} days</div>
         </div>
@@ -363,8 +326,8 @@ function generateMilestoneProgress(streak) {
                 <div class="checkpoint-label">${day} days</div>
             </div>
         `).join('')}
-        <div class="milestone-point target ${streak >= currentMilestone.days ? 'achieved' : ''}">
-            <div class="milestone-icon">${currentMilestone.icon}</div>
+        <div class="milestone-point target">
+            <div class="milestone-icon ${streak >= currentMilestone.days ? 'achieved' : ''}">${currentMilestone.icon}</div>
             <div class="milestone-title">${currentMilestone.title}</div>
             <div class="milestone-days">${currentMilestone.days} days</div>
         </div>
@@ -412,7 +375,6 @@ function addTask(hour, taskText) {
 }
 
 function saveTasks() {
-    showLoading("Saving your progress...");
     const tasks = {};
     document.querySelectorAll('.hour-block').forEach(block => {
         const hour = block.dataset.hour;
@@ -423,11 +385,9 @@ function saveTasks() {
         }));
     });
     localStorage.setItem('tasks', JSON.stringify(tasks));
-    setTimeout(hideLoading, 500);
 }
 
 function loadTasks() {
-    showLoading("Loading your tasks...");
     const tasks = JSON.parse(localStorage.getItem('tasks') || '{}');
     Object.entries(tasks).forEach(([hour, hourTasks]) => {
         const block = document.querySelector(`.hour-block[data-hour="${hour}"]`);
@@ -439,7 +399,6 @@ function loadTasks() {
             taskList.appendChild(li);
         });
     });
-    setTimeout(hideLoading, 1000);
 }
 
 // -------------------- Event Listeners --------------------
@@ -480,15 +439,6 @@ planner.addEventListener('click', (e) => {
 
   if (e.target.classList.contains('task-done-btn')) {
     li.classList.toggle('done');
-    li.style.transition = 'background-color 0.3s ease, color 0.3s ease';
-    if (li.classList.contains('done')) {
-      li.style.backgroundColor = 'rgba(0, 100, 50, 0.8)'; // Completed task color
-      li.style.color = '#fff'; // Text color for completed tasks
-    } else {
-      li.style.backgroundColor = ''; // Reset to default
-      li.style.color = ''; // Reset to default
-    }
-
     updateStreak();
     saveTasks();
     
@@ -561,35 +511,19 @@ function checkAchievements(streak) {
 }
 
 function updateStreak() {
-    const doneTasks = document.querySelectorAll('.task-list li.done');
-    const today = new Date().toDateString();
+  const doneTasks = document.querySelectorAll('.task-list li.done');
+  const today = new Date().toDateString();
 
-    if (lastCompletedDate !== today && doneTasks.length > 5) {
-        streak++;
-        lastCompletedDate = today;
-        localStorage.setItem('streak', streak);
-        localStorage.setItem('lastCompletedDate', today);
-        streakCount.innerText = streak;
+  if (lastCompletedDate !== today && doneTasks.length > 5) {
+    streak++;
+    lastCompletedDate = today;
+    localStorage.setItem('streak', streak);
+    localStorage.setItem('lastCompletedDate', today);
+    streakCount.innerText = streak;
         
-        // Show loading with quote before achievement check
-        showLoading("Checking your achievements...");
-        
-        setTimeout(() => {
-            // Check for new achievements and update milestone modal
-            checkAchievements(streak);
-            updateMilestoneModal(streak);
-            
-            // Special celebration for first streak
-            if (streak === 1) {
-                showLoading(achievementQuotes[Math.floor(Math.random() * achievementQuotes.length)]);
-                setTimeout(() => {
-                    hideLoading();
-                    showFirstStreakCelebration();
-                }, 2000);
-            } else {
-                hideLoading();
-            }
-        }, 1000);
+        // Check for new achievements and update milestone modal
+        checkAchievements(streak);
+        updateMilestoneModal(streak);
     }
 }
 
@@ -811,10 +745,9 @@ function updateMilestoneModal(streak) {
     // Update modal content with progress roadmap
     const progressHTML = generateMilestoneProgress(streak);
     milestoneModal.innerHTML = `
-        <button class="close-modal">×</button>
+        <button class="close-modal">X</button>
         <h2>Your Achievement Journey</h2>
         ${progressHTML}
-        <button class="milestone-info-btn">i</button>
     `;
 
     // Add event listener for close button
@@ -822,33 +755,6 @@ function updateMilestoneModal(streak) {
     if (closeBtn) {
         closeBtn.addEventListener('click', () => {
             milestoneModal.style.display = 'none';
-        });
-    }
-
-    // Add info button functionality
-    const infoBtn = milestoneModal.querySelector('.milestone-info-btn');
-    if (infoBtn) {
-        infoBtn.addEventListener('click', () => {
-            const infoPopup = document.createElement('div');
-            infoPopup.className = 'milestone-info-popup';
-            infoPopup.innerHTML = `
-                <button class="close-popup">×</button>
-                <h3>About Milestones</h3>
-                <p>Milestones are achievements you unlock by maintaining your streak:</p>
-                <p>🎯 Start: Begin your journey</p>
-                <p>🥉 Bronze: 7 days of consistency</p>
-                <p>🥈 Silver: 14 days of dedication</p>
-                <p>🥇 Gold: 30 days of excellence</p>
-                <p>🏆 Platinum: 60 days of mastery</p>
-                <p>💎 Diamond: 100 days of legend</p>
-                <p>Each milestone comes with special rewards and visual effects!</p>
-            `;
-            
-            document.body.appendChild(infoPopup);
-            
-            infoPopup.querySelector('.close-popup').addEventListener('click', () => {
-                infoPopup.remove();
-            });
         });
     }
 }
@@ -893,34 +799,3 @@ function showUpdateToast() {
         toast.style.display = 'none';
     }, 5000);
   }
-
-// Add first streak celebration function
-function showFirstStreakCelebration() {
-    const celebration = document.createElement('div');
-    celebration.className = 'celebration-popup';
-    celebration.innerHTML = `
-        <div class="celebration-content">
-            <div class="celebration-icon">🎉</div>
-            <h2>First Streak Achieved!</h2>
-            <p>${achievementQuotes[Math.floor(Math.random() * achievementQuotes.length)]}</p>
-            <div class="celebration-animation"></div>
-            <button class="celebration-close">Awesome!</button>
-        </div>
-    `;
-    
-    document.body.appendChild(celebration);
-    
-    // Add confetti animation
-    createConfetti();
-    
-    celebration.querySelector('.celebration-close').addEventListener('click', () => {
-        celebration.remove();
-    });
-    
-    // Auto-remove after 5 seconds
-    setTimeout(() => {
-        if (document.body.contains(celebration)) {
-            celebration.remove();
-        }
-    }, 5000);
-}
