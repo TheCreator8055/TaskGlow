@@ -179,30 +179,27 @@ async function initializeApp() {
             new Promise(resolve => setTimeout(resolve, 1000)),
             // Add your actual initialization promises here
         ]);
-        
+
         createHourBlocks();
-        
+
         // Load saved streak first
         streak = parseInt(localStorage.getItem('streak')) || 0;
         lastCompletedDate = localStorage.getItem('lastCompletedDate');
         streakCount.innerText = streak;
-        
-        // Check if it's a new day
+
+        // Ensure tasks persist across reloads
         const today = new Date().toDateString();
         const lastAccessDate = localStorage.getItem('lastAccessDate');
-        
-        if (lastAccessDate !== today) {
-            // It's a new day, clear tasks
+
+        if (!lastAccessDate || new Date(lastAccessDate).toDateString() !== today) {
             localStorage.setItem('lastAccessDate', today);
-            localStorage.setItem('tasks', JSON.stringify({}));
-        } else {
-            // Same day, load saved tasks
-            loadTasks();
         }
-        
+
+        loadTasks();
+
         initializeTheme();
         updateMilestoneIcon(streak); // Update milestone icon based on streak
-        
+
         // Hide loading overlay after initialization
         hideLoading();
     } catch (error) {
@@ -244,6 +241,7 @@ initializeTheme();
 
 // -------------------- Planner Initialization --------------------
 function createHourBlocks() {
+  planner.innerHTML = '';  
   hours.forEach(hour => {
     const block = document.createElement('div');
     block.classList.add('hour-block');
@@ -792,3 +790,12 @@ function createConfetti() {
         }, 3000);
     }
 }
+
+function showUpdateToast() {
+    const toast = document.getElementById('update-toast');
+    toast.style.display = 'block';
+    
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, 5000);
+  }

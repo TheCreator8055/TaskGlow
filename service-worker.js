@@ -109,3 +109,17 @@ async function syncTasks() {
     }
   }
 }
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/serviceworker.js').then(registration => {
+    registration.onupdatefound = () => {
+      const newWorker = registration.installing;
+      newWorker.onstatechange = () => {
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          // A new version is available
+          showUpdateToast(); // Show a message to the user
+        }
+      };
+    };
+  });
+}
