@@ -64,7 +64,8 @@ class AIManager {
             this.integrateSuggestions(suggestions, isWeekend);
         } catch (error) {
             console.error('Error generating suggestions:', error);
-            this.showFallbackSuggestions(isWeekend);
+            const fallbackSuggestions = this.getFallbackSuggestions();
+            this.integrateSuggestions(fallbackSuggestions, isWeekend); // Use fallback suggestions
         }
     }
 
@@ -250,9 +251,10 @@ class AIManager {
 
     getDefaultWorkHour(suggestion) {
         const hour = new Date().getHours();
-        if (suggestion.toLowerCase().includes('morning')) return 9;
-        if (suggestion.toLowerCase().includes('afternoon')) return 14;
-        if (suggestion.toLowerCase().includes('evening')) return 18;
+        const task = suggestion.task.toLowerCase(); // Access the task property
+        if (task.includes('morning')) return 9;
+        if (task.includes('afternoon')) return 14;
+        if (task.includes('evening')) return 18;
         return hour;
     }
 
@@ -335,44 +337,25 @@ class AIManager {
     }
 
     updateUserPatterns({ hour, text, completed }) {
-        // Update tasks by hour
-        if (!this.userPatterns.tasksByHour[hour]) {
-            this.userPatterns.tasksByHour[hour] = [];
+        const hourKey = hour.split(':')[0]; // Extract the hour part (e.g., "10" from "10:00")
+
+        if (!this.userPatterns.tasksByHour[hourKey]) {
+            this.userPatterns.tasksByHour[hourKey] = [];
         }
-        this.userPatterns.tasksByHour[hour].push({
+        this.userPatterns.tasksByHour[hourKey].push({
             text,
             timestamp: Date.now(),
             completed
         });
 
         // Update completion rates
-        if (!this.userPatterns.completionRates[hour]) {
-            this.userPatterns.completionRates[hour] = { total: 0, completed: 0 };
+        if (!this.userPatterns.completionRates[hourKey]) {
+            this.userPatterns.completionRates[hourKey] = { total: 0, completed: 0 };
         }
-        this.userPatterns.completionRates[hour].total++;
+        this.userPatterns.completionRates[hourKey].total++;
         if (completed) {
-            this.userPatterns.completionRates[hour].completed++;
+            this.userPatterns.completionRates[hourKey].completed++;
         }
-
-        // Update common tasks
-        if (!this.userPatterns.commonTasks[text]) {
-            this.userPatterns.commonTasks[text] = 0;
-        }
-        this.userPatterns.commonTasks[text]++;
-
-        // Categorize task (simple keyword-based categorization)
-        const category = this.categorizeTask(text);
-        if (!this.userPatterns.taskCategories[category]) {
-            this.userPatterns.taskCategories[category] = [];
-        }
-        this.userPatterns.taskCategories[category].push({
-            text,
-            hour,
-            timestamp: Date.now()
-        });
-
-        // Update daily stats
-        this.updateDailyStats(completed);
 
         // Save patterns to localStorage
         this.savePatterns();
@@ -528,10 +511,23 @@ class AIManager {
     savePatterns() {
         localStorage.setItem('userPatterns', JSON.stringify(this.userPatterns));
     }
+
+    saveDailyProgress(completed, total) {
+        const today = new Date().toDateString();
+        this.taskHistory.push({
+            date: today,
+            completed,
+            total,
+            completionRate: Math.round((completed / total) * 100)
+        });
+
+        // Save task history to localStorage
+        localStorage.setItem('taskHistory', JSON.stringify(this.taskHistory));
+    }
 }
 
 // Initialize AI Manager
 const aiManager = new AIManager();
 
 // Export for use in other files
-window.aiManager = aiManager; 
+window.aiManager = aiManager;

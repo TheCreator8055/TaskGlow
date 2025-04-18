@@ -36,23 +36,23 @@ class TestSuite {
         // Test 3: User Pattern Updates
         this.addTest('User Pattern Updates', () => {
             // Clear existing patterns for this test
-            this.aiManager.userPatterns = { hours: {} };
-            
+            this.aiManager.userPatterns = { tasksByHour: {}, completionRates: {} };
+
             const testTask = {
-                hour: '10:00',
+                hour: '10', // Use "10" instead of "10:00"
                 text: 'Test Task',
                 completed: true
             };
-            
+
             // Update patterns
             this.aiManager.updateUserPatterns(testTask);
-            
+
             // Verify the pattern was created and has the correct structure
-            const hourPattern = this.aiManager.userPatterns.hours['10'];
-            return hourPattern !== undefined && 
-                   hourPattern.total === 1 && 
-                   hourPattern.completed === 1 &&
-                   hourPattern.successRate === 100;
+            const hourPattern = this.aiManager.userPatterns.tasksByHour['10'];
+            return hourPattern !== undefined &&
+                   hourPattern.length === 1 &&
+                   hourPattern[0].text === 'Test Task' &&
+                   hourPattern[0].completed === true;
         });
 
         // Test 4: Fallback Suggestions
@@ -134,4 +134,4 @@ class TestSuite {
 window.addEventListener('load', () => {
     const testSuite = new TestSuite();
     testSuite.runTests();
-}); 
+});
