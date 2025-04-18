@@ -352,8 +352,8 @@ function generateMilestoneProgress(streak) {
     }
 
     const timelineHTML = `
-        <div class="milestone-point start">
-            <div class="milestone-icon ${streak >= startDays ? 'achieved' : ''}">${startDays === 0 ? '🎯' : previousMilestone.icon}</div>
+        <div class="milestone-point start ${streak >= startDays ? 'achieved' : ''}">
+            <div class="milestone-icon">${startDays === 0 ? '🎯' : previousMilestone.icon}</div>
             <div class="milestone-title">${startDays === 0 ? 'Start' : previousMilestone.title}</div>
             <div class="milestone-days">${startDays} days</div>
         </div>
@@ -363,8 +363,8 @@ function generateMilestoneProgress(streak) {
                 <div class="checkpoint-label">${day} days</div>
             </div>
         `).join('')}
-        <div class="milestone-point target">
-            <div class="milestone-icon ${streak >= currentMilestone.days ? 'achieved' : ''}">${currentMilestone.icon}</div>
+        <div class="milestone-point target ${streak >= currentMilestone.days ? 'achieved' : ''}">
+            <div class="milestone-icon">${currentMilestone.icon}</div>
             <div class="milestone-title">${currentMilestone.title}</div>
             <div class="milestone-days">${currentMilestone.days} days</div>
         </div>
@@ -811,7 +811,7 @@ function updateMilestoneModal(streak) {
     // Update modal content with progress roadmap
     const progressHTML = generateMilestoneProgress(streak);
     milestoneModal.innerHTML = `
-        <button class="close-modal">X</button>
+        <button class="close-modal">×</button>
         <h2>Your Achievement Journey</h2>
         ${progressHTML}
         <button class="milestone-info-btn">i</button>
@@ -835,13 +835,16 @@ function updateMilestoneModal(streak) {
                 <button class="close-popup">×</button>
                 <h3>About Milestones</h3>
                 <p>Milestones are achievements you unlock by maintaining your streak:</p>
-                ${milestones.map(milestone => `
-                    <p>${milestone.icon} ${milestone.title}: ${milestone.description}</p>
-                `).join('')}
+                <p>🎯 Start: Begin your journey</p>
+                <p>🥉 Bronze: 7 days of consistency</p>
+                <p>🥈 Silver: 14 days of dedication</p>
+                <p>🥇 Gold: 30 days of excellence</p>
+                <p>🏆 Platinum: 60 days of mastery</p>
+                <p>💎 Diamond: 100 days of legend</p>
                 <p>Each milestone comes with special rewards and visual effects!</p>
             `;
             
-            milestoneModal.appendChild(infoPopup);
+            document.body.appendChild(infoPopup);
             
             infoPopup.querySelector('.close-popup').addEventListener('click', () => {
                 infoPopup.remove();
