@@ -439,6 +439,15 @@ planner.addEventListener('click', (e) => {
 
   if (e.target.classList.contains('task-done-btn')) {
     li.classList.toggle('done');
+    li.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+    if (li.classList.contains('done')) {
+      li.style.backgroundColor = 'rgba(0, 100, 50, 0.8)'; // Completed task color
+      li.style.color = '#fff'; // Text color for completed tasks
+    } else {
+      li.style.backgroundColor = ''; // Reset to default
+      li.style.color = ''; // Reset to default
+    }
+
     updateStreak();
     saveTasks();
     

@@ -191,10 +191,12 @@
   
   .task-list li.done {
     background: linear-gradient(135deg, rgba(0, 51, 34, 0.8) 0%, rgba(0, 100, 50, 0.8) 100%);
+    text-decoration: line-through;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   
   .task-list li:hover {
-    background: rgba(51, 51, 51, 0.8);
+    background: rgba(0, 80, 40, 0.9);
     transform: translateX(5px);
   }
   
