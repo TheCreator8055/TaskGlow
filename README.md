@@ -16,7 +16,7 @@
 
 > A quick glance at the interface:
 
-![Smart Planner UI Demo](./assets/demo.gif) 
+![Smart Planner UI Demo](icons/preview-MadewithClipchamp-ezgif.com-video-to-gif-converter.gif) 
 
 ---
 
