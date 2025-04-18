@@ -34,7 +34,7 @@
 ## 🚀 Try it Live
 
 🔗 [Live Demo on Netlify](https://smart-planner.netlify.app/)  
-📁 [Source Code on GitHub](https://github.com/your-username/smart-planner)
+📁 [Source Code on GitHub](https://github.com/TheCreator8055/TaskGlow)
 
 ---
 
@@ -56,7 +56,7 @@ git clone https://github.com/your-username/smart-planner.git
 
 # Open index.html in your browser
 ```
->**⚡ No build needed – it’s a pure frontend project. Just run and go!**
+> **⚡ No build needed – it’s a pure frontend project. Just run and go!**
 ---
 
 ## ✨ Inspired by
