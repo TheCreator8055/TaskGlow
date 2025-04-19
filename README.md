@@ -35,7 +35,7 @@
 
 🔗 [Live Demo on Netlify](https://smart-planner.netlify.app/)  
 📁 [Source Code on GitHub](https://github.com/TheCreator8055/TaskGlow)
-
+> 📱 Mobile version improvements in progress based on early user feedback...
 ---
 
 ## 🛠️ Tech Stack
