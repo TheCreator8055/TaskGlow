@@ -43,7 +43,6 @@
 - HTML5  
 - CSS3 (Flexbox + Grid)  
 - JavaScript (Vanilla JS + DOM manipulation)  
-- Gemini API (for task suggestions)  
 - LocalStorage & PWA Manifest
 
 ---
